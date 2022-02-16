@@ -8,5 +8,20 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      primaryKey: true, 
+    },
+    season: {
+      type: DataTypes.STRING,
+    },
+    duration: {
+      type: DataTypes.FLOAT,
+
+    },
+    difficult: {
+      type: DataTypes.STRING,
+    },
   });
 };

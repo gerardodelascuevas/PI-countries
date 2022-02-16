@@ -1,0 +1,11 @@
+.card{
+    border: solid 1px black;
+    width: 80%;
+    height: 450px;
+    margin: 0.5rem;
+}
+.bandera{
+    margin-top: 2rem;
+    width: 80%;
+    height: 60%;
+}

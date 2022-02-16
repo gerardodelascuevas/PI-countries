@@ -1,0 +1,12 @@
+
+.landing{
+    width: 100vh;
+    height: 100vh;
+    background-image: url('./img/mundo-world.jpg');
+     background-repeat: no-repeat;
+  
+}
+
+.h1-mundo{
+    color: white;
+}
