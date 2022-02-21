@@ -1,0 +1,12 @@
+.activity-creates{
+    
+    border: solid 1px black;
+    width: 60%;
+    height: 600px;
+    margin: 0.5rem;
+   margin-top: 2rem;
+}
+
+.span-country{
+    padding: 1rem;
+}

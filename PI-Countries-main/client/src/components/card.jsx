@@ -8,6 +8,7 @@ export default function Card({name, flag, continent, id }){
             <img src={flag} alt={name} className='bandera'/>
             <h3>{name}</h3>
             <h4> {continent} </h4>
+           
             {/* <h5>{id} </h5> */}
 
             <Link to={`/countries/${id}`}>

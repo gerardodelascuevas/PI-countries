@@ -22,6 +22,19 @@ export default function rootReducer(state=initialState, action){
                 ...state.myCountry,
                 myCountry: action.payload,
             }
+
+        case "ORDER_BY_NAME":
+            let sortName = action.payload === "a-z"
+            state.countries.sort((a,b)=> {
+                if(a.name<b.name) return -1
+                else return 0
+            })
+            return {
+                ...state,
+                countries: sortName,
+            }
+
+
             default: return state
     }
 }

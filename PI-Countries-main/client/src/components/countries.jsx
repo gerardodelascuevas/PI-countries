@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getCountries } from '../actions'
+import { getCountries, orderByName } from '../actions'
 import Card from './card'
 import './countries.css'
 import Pagination from './pagination'
 import Search from './search'
 import { myCountryByName } from "../actions"
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function Countries (){  
     const dispatch = useDispatch()
@@ -31,7 +31,6 @@ export default function Countries (){
 
     const buscando= (e)=> { //e es el valor del input
        setName(e)
-       //console.log(name)
     }
 
     const funcionParaBuscarElPais = ()=> {
@@ -42,6 +41,16 @@ export default function Countries (){
     }
     //FIN DE LOGICA DE BUSQUEDA POR NOMBRE
 
+    //INICIO DE LOGICA DE ORDENAMIENTO POR ORDEN ALFABETICO 
+    const [ordByName, setOrdByName] = useState('')
+    const orderthename = (e)=> {
+        dispatch(orderByName(e))
+       // setPages(1)
+      //  setOrdByName(`order ${e}`)
+    }
+
+    //FIN DE LA LOGICA DE ORDENAMIENTO POR ORDEN ALFABETICO
+    
     
     return (
         <div> 
@@ -53,11 +62,22 @@ export default function Countries (){
             />
             <span> You are on page {pages}</span>
             </section>
+
+            <section>
+                <select onChange={e=> orderthename(e.target.value)} >
+                    <option> Order by ABC</option>
+                    <option value="a-z"> A-Z </option>
+                    <option value="z-a"> Z-A </option>
+                </select>
+            </section>
+
             <Search 
             miFuncion={buscando}
             laDeBuscar={funcionParaBuscarElPais}
             />            
-            
+            <Link to= '../activity' > 
+                <button> Create your own Activity </button>
+            </Link>
         <div className='main-container'>
             
             {currentCountry.map(x=> {

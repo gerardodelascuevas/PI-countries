@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const axios = require('axios');
 // const Activities = require('../models/Activities');
-const { Country, Activities } = require('../db')
+const { Countries, Activities } = require('../db')
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -16,35 +16,90 @@ const allCountries = async ()=> {
  //country data es objeto 
  countryData = Object.values(countryData).splice(5)[0]
  //AHORA COUNTRY DATA ES ARRAY
-//  console.log((countryData[0]))
-
     let result = countryData.map(x=> {
       return {
           id: x.fifa ? x.fifa : Math.random(),
           name: x.name.common,
           capital: x.capital ? x.capital[0] : "We don't have a capital",
           continent: x.region,
-          languages: x.languages,
+         // x.languages: { ber: 'Berber', mey: 'Hassaniya', spa: 'Spanish' },
+          languages: typeof x.languages == 'object' ? Object.values(x.languages) : x.languages,
           superficie: x.area,
           flag: x.flags[0],
          population: x.population,
-         subregion: x.subregion,
-          
+         subregion: x.subregion,          
       }
-
     })
-    //console.log(result)
+    result = Object.values(result)
+    
     return result
 }
+//  countryData.map(x=> {
+//         try { Countries.findOrCreate({
+//                 where: {
+//                      id: x.fifa ? x.fifa : Math.random(),
+//                     name: x.name.common,
+//                     capital: x.capital ? x.capital[0] : "We don't have a capital",
+//                     continent: x.region,
+//                 //   languages: typeof x.languages == 'object' ? Object.values(x.languages) : x.languages,
+//                     superficie: x.area,
+//                     flag: x.flags[0],
+//                     population: x.population,
+//                     subregion: x.subregion, 
+//                 }     
+//         })                   
+//         } catch(e) {console.log(e)}
+//       })
+
+const getDbInfo = async ()=> {
+    return await Countries.findAll({
+        include: [{
+            model: Activities,
+            attributes: ["name"],
+            through: {
+                attributes: []
+            }
+        }]
+    })
+}
+
+//console.log(getDbInfo())
 
 router.get('/country', async (req, res)=> {
     const {name} = req.query
-    const apiData =  await allCountries()
-    console.log('esto es name ' + name)
+    const infodb =  await allCountries()
+    //console.log(infodb)
+    infodb.map(x=> {
+                try { Countries.findOrCreate({
+                        where: {
+                            id: String(x.id),
+                            name: x.name,
+                            capital: x.capital ? x.capital : "We don't have a capital",
+                            continent: x.continent,
+                        //   languages: typeof x.languages == 'object' ? Object.values(x.languages) : x.languages,
+                            superficie: x.superficie,
+                            flag: x.flag,
+                            population: x.population,
+                            subregion: x.subregion ? x.subregion : "Sorry we don't have data", 
+                        }     
+                })                   
+                } catch(e) {console.log(e)}
+              })
+
+
+    // console.log(Countries.findAll({
+    //     include: {
+    //         model: Activities,
+    //         attributes: ["name"],
+    //         through: {
+    //             attributes: []
+    //         }
+    //     }
+    // }))  
     if(name){
         let myCountry = await axios.get(`https://restcountries.com/v3/name/${name}`)
         myCountry = myCountry.data[0]
-        console.log(myCountry)
+      
         const myData = {
             id: myCountry.id ? myCountry.id : Math.random(),
             name: myCountry.name.common,
@@ -57,26 +112,36 @@ router.get('/country', async (req, res)=> {
            subregion: myCountry.subregion,
         }
         res.send(myData)
-    }
-       
-     else res.send(apiData)    
+    }     
+    
+    
+     else res.send(await Countries.findAll())    
 })
 
-router.get(`./country/:id`, async (req, res)=> {
+
+router.get('/country/:id', async (req, res)=> {
     let { id } = req.params
-    console.log(id)
+    if(typeof id == 'string') id = id.toLocaleLowerCase()
+    
     let myCountry = await allCountries()
-    console.log(myCountry)
-    if(id){
-        const theCountry = myCountry.find(x=> x.id.toLowerCase() === req.params.id.toLowerCase())
-        theCountry.length ? 
-        res.send(theCountry) : res.sendStatus(404).send("Sorry we don't have data")
+
+    if(id){            
+         for(let i =0; i<myCountry.length;i++){
+             if(typeof myCountry[i].id == 'string') myCountry[i].id = myCountry[i].id.toLocaleLowerCase()
+             if(id == myCountry[i].id) {
+                 var theCountry = myCountry[i]             
+         } }
+        // let theCountry = myCountry.find(x=> {
+        //      x.id == id           
+        // } )
+        //theCountry.length ? res.send(theCountry) : res.sendStatus(404).send("Sorry we don't have data")       
     }
-    res.send("Ahi te va el id " + id)
+    res.send(theCountry)
 })
+
 
 router.post('/activity', (res, req)=> {
-   const { name, season, duration, difficult } = req.body
+   const { country, name, season, duration, difficult } = req.body
 
    Activities.findOrCreate({
        where: {           
@@ -86,6 +151,7 @@ router.post('/activity', (res, req)=> {
            difficult: difficult,
        }
    })
+   
    res.send.json("Your activity was created correctly ")
 })
 
