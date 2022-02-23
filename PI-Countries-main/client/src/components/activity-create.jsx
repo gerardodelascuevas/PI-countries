@@ -1,11 +1,13 @@
 import { useState } from "react"
-import { useSelector } from "react-redux"
-import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { Link, useNavigate } from "react-router-dom"
+import { postMyActivity } from "../actions"
 import './activity-create.css'
 
 
 export default function ActivityCreate(){
-
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
     const allCountries = useSelector(state => state.countries)
     //console.log(allCountries)
 
@@ -34,6 +36,23 @@ export default function ActivityCreate(){
 
     console.log(myActivity)
     console.log(country)
+
+    const handleCreateActivity = (e)=> {
+        //e.preventDefault()
+        dispatch(postMyActivity(myActivity))
+        alert("Your activity has been created correctly")
+
+        setMyActivity({
+        countries: country,
+        name: '',
+        season: '',
+        duration: '',
+        difficult: '',
+        })
+
+        navigate('/countries')
+
+    }
     return (
         <div className="activity-creates">
 
@@ -49,7 +68,7 @@ export default function ActivityCreate(){
                 
             </select>
             <span className="span-country"> Your contries for this activity: { country } </span>
-            <button > Load your country! </button>  
+            
             <h6> Activity Name: <input type='text' name="name" onChange={handlechange}/> </h6>
             <h6> Season: 
                 <select name="season" onChange={e=> handlechange(e)}>
@@ -75,7 +94,7 @@ export default function ActivityCreate(){
                     <option value="extreme"> Extreme </option>
                 </select>
             </h6>
-            <button> Click here to create the activity  </button>
+            <button onClick={handleCreateActivity}> Click here to create the activity!  </button>
         </div>
     )
 }

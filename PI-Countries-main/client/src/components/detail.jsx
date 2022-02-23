@@ -12,7 +12,7 @@ export default function Detail(){
     // useEffect(()=> dispatch(myCountry(id)), [dispatch])
     // console.log(theCountry)
     const allCountries = useSelector(state=> state.countries)
-    useEffect(()=> dispatch(getCountries()), [dispatch])
+    useEffect(()=> dispatch(getCountries()), [])
     //console.log(allCountries)
     
     const theCountry = allCountries.find(x=> {
