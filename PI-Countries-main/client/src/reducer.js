@@ -19,9 +19,15 @@ export default function rootReducer(state=initialState, action){
             }
 
         case "GET_BY_NAME":
+            // return {
+            //     ...state.countries,
+            //     countries: action.payload,
+            // }
+            let mipais = action.payload
+            let elpais = state.countries.find(x=> x.name== mipais)
             return {
-                ...state.countries,
-                countries: action.payload,
+                ...state.countries, 
+                countries: elpais
             }
 
         case "ORDER_BY_NAME":
@@ -41,12 +47,12 @@ export default function rootReducer(state=initialState, action){
 
         case "ORDER_BY_CONTINENT":
              return {
-                ...state.countries,
+                ...state.myCountry,
                 countries: action.payload,
             }
 
         case "ORDER_BY_POPULATION":
-            let sortPopulation = action.payload === "desc" ? 
+            let sortPopulation = action.payload === "asc" ? 
             state.countries.sort((a,b)=> {
                 if(a.population < b.population) return -1
                 else return 0
@@ -80,6 +86,20 @@ export default function rootReducer(state=initialState, action){
         case "POST_ACTIVITY":
             return {
                 ...state
+            }
+
+        case "FILTER_ACTIVITIES":
+            let activity = action.payload
+            let filtrados = state.countries.filter(x=> {
+                return x.activities.length ? x : null
+            }) //paises con actividades creadas 
+            let elpaisquebusco = filtrados.filter(x=> {
+                let mispaises = x.activities.find(x=> x.name == activity)
+                return mispaises
+            })
+            return {
+                ...state,
+                countries: elpaisquebusco
             }
 
 

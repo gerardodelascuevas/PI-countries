@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getCountries, orderByContinent, orderByName, orderByPopulation, orderBySuperficie } from '../actions'
+import { filterByActivity, getCountries, orderByContinent, orderByName, orderByPopulation, orderBySuperficie } from '../actions'
 import Card from './card'
 import './countries.css'
 import Pagination from './pagination'
@@ -20,7 +20,7 @@ export default function Countries (){
 
     let lastCountry = pages * countrypp
     let firstCountry = lastCountry - countrypp
-    let currentCountry =  allCountries.slice(firstCountry, lastCountry)
+    let currentCountry = allCountries.length > 1 ? allCountries.slice(firstCountry, lastCountry) : allCountries
 
     let pagination = n=> setPages(n)
     //FIN DE LOGICA DE PAGINADO     
@@ -32,15 +32,23 @@ export default function Countries (){
     const buscando= (e)=> { //e es el valor del input
        setName(e)
     }
-    const funcionParaBuscarElPais = (e)=> {
-        e.preventDefault()
-        dispatch(myCountryByName(name))
-        setPages(1)
-        setName('')
-        console.log('hago click ')
-    }
+    // const funcionParaBuscarElPais = (e)=> {
+    //     e.preventDefault()
+    //     dispatch(myCountryByName(name))
+    //     setPages(1)
+    //     setName('')
+    // }
 
-    console.log(name)
+    let myId = allCountries.find(x=> {
+        if(x.name.toLowerCase() == name.toLowerCase())
+        return x.id
+    })
+    const funcionParaBuscarElPais = ()=> {
+        myId ? 
+         navigate(`./${myId.id}`) : alert("Sorry your country doesn't exist")
+    }
+   
+
     //FIN DE LOGICA DE BUSQUEDA POR NOMBRE
 
     //INICIO DE LOGICA DE ORDENAMIENTO POR ORDEN ALFABETICO 
@@ -60,7 +68,6 @@ export default function Countries (){
         setPages(1)
         setContinent(`order ${e}`) 
     }
-
     //FIN DE LOGICA DE ORDENAMIENTO POR CONTINENTE
 
     //INICIO DE LOGICA DE ORDENAMIENTO POR POBLACION 
@@ -81,8 +88,29 @@ export default function Countries (){
        setOrdsup(`order ${e}`)    //--> sin esto rompe 
     }
     //FIN DE LOGICA DE ORDENAMIENTO POR TERRITORIO 
+
+    //INICIO DE LOGICA DE ORDENAMIENTO POR ACTIVIDAD
+    let paisesfiltrados = allCountries.filter(x=> { //AQUI TENGO LOS PAISES CON ACTIVIDADES 
+        return x.activities.length ? x.activities : null
+    })
+    let actividadesnombre = paisesfiltrados.map(x=>{ //FILTRAR SOLO NOMBRES
+        return x.activities.map(x=> x.name)
+    })
+   let actividadesnombreplain = actividadesnombre.flat()   //aplanar actividadesnombre
+   let actividadeslistasparamostrar = actividadesnombreplain.reduce((a, e) =>{ //ELIMINAR DUPLICADOS
+    if(!a.find(d=> d===e)) a.push(e)
+    return a
+   }, []) 
+
+   const [ordbyact, setOrdbyact] = useState('')
+   const filtrarporactividad = (e)=> {
+       dispatch(filterByActivity(e))
+       setPages(1)
+       setOrdbyact(`order ${e}`)
+   }
+    //FIN DE LOGICA DE ORDENAMIENTO POR ACTIVIDAD
     
-    console.log(currentCountry)
+//    console.log(currentCountry)
     return (
         <div> 
             <section className='section-1'>             
@@ -123,8 +151,9 @@ export default function Countries (){
                     <option value="desc">DSC</option>    
                 </select>
 
-                <select className='activities'>
-                    <option value=""> Activities </option>    
+                <select className='activities' onChange={e=> filtrarporactividad(e.target.value)}>
+                    <option value=""> Activities </option>
+                    {actividadeslistasparamostrar.map(x=> <option value={x} key={x}> { x } </option>)}                      
                 </select>  
 
                 <Link to= '../activity' > 
@@ -132,11 +161,6 @@ export default function Countries (){
                 </Link>
 
             </section> 
-            {/* 
-            <Search onChange={e=> funcionParaBuscarElPais(e.target.value)}
-            miFuncion={funcionParaBuscarElPais}
-            laDeBuscar={funcionParaBuscarElPais}
-            />  */}
 
             <input placeholder='Type for search your Country! 'onChange={e=> buscando(e.target.value)} />
             <button onClick={e=> funcionParaBuscarElPais(e)}> Go to search! </button>

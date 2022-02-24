@@ -12,24 +12,30 @@ export const getCountries = ()=> {
 
 export const myCountry = (id)=> {
 
-    return async dispatc=> {
+    return async dispatch=> {
         let json = await axios.get(`http://localhost:3001/country/${id}`)
-        return dispatc({
+        return dispatch({
             type: "GET_DETAILS",
             payload: json.data, 
         })
     }
 }
 
-export const myCountryByName = (name)=> {
-    return async dispatch=> {
-        try {
-            let json = await axios.get(`http://localhost:3001/country?name=${name}`)
-        return dispatch({
-            type: "GET_BY_NAME",
-            payload: json.data,
-        })
-        } catch(e) {console.log('algo fallo en la peticion my country by name ' + e)}        
+
+//export const myCountryByName = (name)=> {
+    // return async dispatch=> {
+    //     try {
+    //         let json = await axios.get(`http://localhost:3001/country?name=${name}`)
+    //     return dispatch({
+    //         type: "GET_BY_NAME",
+    //         payload: json.data,
+    //     })
+    //     } catch(e) {console.log('algo fallo en la peticion my country by name ' + e)}        
+    // }
+    export const myCountryByName = (payload)=> {
+    return {
+        type: "GET_BY_NAME",
+        payload
     }
 }
 
@@ -74,6 +80,13 @@ export const postMyActivity = (payload)=> {
 export const getMyName = (payload)=> {
     return {
         type: "GET_BY_NAME",
+        payload
+    }
+}
+
+export const filterByActivity = (payload)=> { //comer arepa 
+    return {
+        type: "FILTER_ACTIVITIES",
         payload
     }
 }

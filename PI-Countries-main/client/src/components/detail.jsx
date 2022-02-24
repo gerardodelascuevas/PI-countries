@@ -18,7 +18,7 @@ export default function Detail(){
     const theCountry = allCountries.find(x=> {
         return x.id == id
     })
-    // console.log(theCountry)
+    console.log(theCountry.activities.map(x=> x))
 
     return ( 
         // <h1>ola ke ase </h1>
@@ -30,7 +30,22 @@ export default function Detail(){
             <h4>Capital: {theCountry.capital}</h4>
             <h5>Subregion: {theCountry.subregion}</h5>
             <h5>Superficie: {theCountry.superficie} km2 </h5>
-            <h5>Population: {theCountry.population} </h5>            
+            <h5>Population: {theCountry.population} </h5>  
+            {/* <h5> Activities: {theCountry.activities.length ? theCountry.activities.map(x=> x.name) : "We don't have activities yet"}</h5>            */}
+            <div>
+                <h5> Activities: {theCountry.activities.length ? theCountry.activities.map(x=> {
+                    return <span>{x.name}</span> 
+                }) : "We don't have activities yet"}</h5>
+                 <h5> Activities duration: {theCountry.activities.length ? theCountry.activities.map(x=> {
+                    return <span>{x.duration}</span> 
+                }) : ""}</h5>
+                 <h5> Activities season: {theCountry.activities.length ? theCountry.activities.map(x=> {
+                    return <span>{x.season}</span> 
+                }) : ""}</h5>
+                 <h5> Activities difficult: {theCountry.activities.length ? theCountry.activities.map(x=> {
+                    return <span>{x.difficult}</span> 
+                }) : ""}</h5>
+            </div>
             <Link to='../countries'>
                 <button> Back to home! </button>
             </Link>

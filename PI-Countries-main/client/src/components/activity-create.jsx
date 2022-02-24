@@ -72,6 +72,7 @@ export default function ActivityCreate(){
             <h6> Activity Name: <input type='text' name="name" onChange={handlechange}/> </h6>
             <h6> Season: 
                 <select name="season" onChange={e=> handlechange(e)}>
+                    <option> Select the season </option>
                     <option value="summer">Summer </option>
                     <option value="fall"> Fall </option>
                     <option value="winter"> Winter </option>
@@ -88,6 +89,7 @@ export default function ActivityCreate(){
              Hours </h6>
             <h6> Difficult: 
                 <select name = 'difficult' onChange={handlechange}>
+                    <option> Select the difficult </option>
                     <option value="easy"> Easy </option>
                     <option value="intermediate"> Intermediate </option>
                     <option value="hard"> Hard </option>

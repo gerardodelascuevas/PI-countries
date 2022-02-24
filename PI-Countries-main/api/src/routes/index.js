@@ -22,7 +22,7 @@ const allCountries = async ()=> {
         //console.log(nombre)
       return {
          // id: x.fifa ? x.fifa : x.name.common.slice(0, 3), //x.name.common,//String(Math.random()),
-          id: x.fifa ? x.fifa : x.name.common,//String(Math.random()),
+          id: x.fifa ? x.fifa : x.name.common, //String(Math.random()),
           name: x.name.common,
           capital: x.capital ? x.capital[0] : "We don't have a capital",
           continent: x.region,
@@ -44,7 +44,7 @@ const getDbInfo = async ()=> {
     return await Countries.findAll({
         include: [{
             model: Activities,
-            attributes: ["name"],
+            attributes: ["name", "season", "duration", "difficult"],
             through: {
                 attributes: []
             }
@@ -52,14 +52,28 @@ const getDbInfo = async ()=> {
     })
 }
 
-//console.log(getDbInfo())
+const getAllInfo = async ()=> {
+    const apiInfo = await allCountries()
+    const databaseinfo = await getDbInfo()
+   // console.log(databaseinfo)
+    let allinfo = apiInfo.concat(databaseinfo)    
+    return allinfo
+}
+
+router.get('/prueba', async (req, res)=> {
+    try {
+        const information = await getAllInfo()
+        res.send(information)
+    } catch(e) {console.log(e)}
+})
 
 router.get('/country', async (req, res)=> {
     const {name} = req.query
     const infodb =  await allCountries()
-  //const infodb = await getDbInfo()
-    console.log(infodb)
-    infodb.map(x=> {
+  const dbinfo = await getAllInfo()
+
+    //console.log(dbinfo)
+    dbinfo.map(x=> {
                 try { Countries.findOrCreate({
                         where: {
                             id: typeof x.id == 'string' ? x.id : x.name.slice(0, 3).toUpperCase(),
@@ -70,13 +84,15 @@ router.get('/country', async (req, res)=> {
                             superficie: x.superficie,
                             flag: x.flag,
                             population: x.population,
-                            subregion: x.subregion ? x.subregion : "Sorry we don't have data", 
-                           // attributes: x.attributes, //añadiendo esta linea 
+                            subregion: x.subregion ? x.subregion : "Sorry we don't have data",                             
+                            // Activities: x.activities ? x.activities : "Sorry we don't have activities yet"
                         }     
                 })                   
                 } catch(e) {console.log(e)}
               })
-              console.log(await getDbInfo())
+             // console.log(await getDbInfo())
+             const infodedatabase = await getDbInfo()
+            // console.log(infodedatabase)
     if(name){
         let myCountry = await axios.get(`https://restcountries.com/v3/name/${name}`)
         myCountry = myCountry.data[0]
@@ -96,7 +112,7 @@ router.get('/country', async (req, res)=> {
     }     
     
    
-     else res.send(await Countries.findAll())    
+     else res.send(infodedatabase)    
 })
 
 
@@ -147,7 +163,7 @@ router.get('/countries', async(req, res)=> {
 
 
 router.post('/activity', async (req, res)=> {
-    console.log(req.body)
+   // console.log(req.body)
    const { thecountries, name, season, duration, difficult } = req.body   
 
   let newActivity = await Activities.create({          
