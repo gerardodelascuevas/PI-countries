@@ -14,7 +14,7 @@ export default function ActivityCreate(){
    const [country, setCountry] = useState([])
 
     const [myActivity, setMyActivity]  = useState({
-        countries: country,
+        thecountries: country,
         name: '',
         season: '',
         duration: '',
@@ -24,7 +24,7 @@ export default function ActivityCreate(){
     const handlechange = (e)=> {
         setMyActivity({
             ...myActivity,
-           countries : [country],
+            thecountries : country,
             [e.target.name] : e.target.value
         })
     }
@@ -43,7 +43,7 @@ export default function ActivityCreate(){
         alert("Your activity has been created correctly")
 
         setMyActivity({
-        countries: country,
+        thecountries: country,
         name: '',
         season: '',
         duration: '',

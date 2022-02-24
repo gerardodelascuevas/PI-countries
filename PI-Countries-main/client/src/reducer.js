@@ -20,7 +20,7 @@ export default function rootReducer(state=initialState, action){
 
         case "GET_BY_NAME":
             return {
-                ...state.myCountry,
+                ...state.countries,
                 countries: action.payload,
             }
 

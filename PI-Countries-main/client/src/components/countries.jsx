@@ -32,9 +32,12 @@ export default function Countries (){
     const buscando= (e)=> { //e es el valor del input
        setName(e)
     }
-    const funcionParaBuscarElPais = ()=> {
+    const funcionParaBuscarElPais = (e)=> {
+        e.preventDefault()
         dispatch(myCountryByName(name))
         setPages(1)
+        setName('')
+        console.log('hago click ')
     }
 
     console.log(name)
@@ -102,7 +105,7 @@ export default function Countries (){
                     <option > Order by Continent </option>    
                     <option value='Africa'> Africa </option>
                     <option value="Americas">America</option>
-                    <option value="Antartic">Antartida</option>
+                    {/* <option value="Antarctica">Antartida</option> */}
                     <option value="Asia"> Asia </option>
                     <option value="Europe">Europe</option>                    
                     <option value="Oceania">Oceania</option>               
@@ -114,10 +117,10 @@ export default function Countries (){
                     <option value="desc">DESC</option>    
                 </select>  
 
-                <select className='superficie' onChange={e=> ordthesup(e)}>
+                <select className='superficie' onChange={e=> ordthesup(e.target.value)}>
                     <option > Order by superficie </option>
                     <option value="asc">ASC</option>
-                    <option value="desc">DESC</option>    
+                    <option value="desc">DSC</option>    
                 </select>
 
                 <select className='activities'>
@@ -136,7 +139,7 @@ export default function Countries (){
             />  */}
 
             <input placeholder='Type for search your Country! 'onChange={e=> buscando(e.target.value)} />
-            <button onChange={e=> funcionParaBuscarElPais(e.target.value)}> Go to search! </button>
+            <button onClick={e=> funcionParaBuscarElPais(e)}> Go to search! </button>
         <div className='main-container'>
             
             {currentCountry.map(x=> {

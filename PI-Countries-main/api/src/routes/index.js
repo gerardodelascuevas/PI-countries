@@ -36,8 +36,9 @@ const allCountries = async ()=> {
     })
     result = Object.values(result)
     
-    return result
-}
+        return result
+     
+        } 
 
 const getDbInfo = async ()=> {
     return await Countries.findAll({
@@ -56,7 +57,8 @@ const getDbInfo = async ()=> {
 router.get('/country', async (req, res)=> {
     const {name} = req.query
     const infodb =  await allCountries()
-    //console.log(infodb)
+  //const infodb = await getDbInfo()
+    console.log(infodb)
     infodb.map(x=> {
                 try { Countries.findOrCreate({
                         where: {
@@ -69,11 +71,12 @@ router.get('/country', async (req, res)=> {
                             flag: x.flag,
                             population: x.population,
                             subregion: x.subregion ? x.subregion : "Sorry we don't have data", 
+                           // attributes: x.attributes, //añadiendo esta linea 
                         }     
                 })                   
                 } catch(e) {console.log(e)}
               })
-  
+              console.log(await getDbInfo())
     if(name){
         let myCountry = await axios.get(`https://restcountries.com/v3/name/${name}`)
         myCountry = myCountry.data[0]
@@ -143,26 +146,25 @@ router.get('/countries', async(req, res)=> {
 })
 
 
+router.post('/activity', async (req, res)=> {
+    console.log(req.body)
+   const { thecountries, name, season, duration, difficult } = req.body   
 
-router.post('/activity', (res, req)=> {
-   const { country, name, season, duration, difficult } = req.body
-
-  let newActivity = Activities.findOrCreate({
-       where: {           
-           name: name, 
-           season: season, 
-           duration: duration,
-           difficult: difficult,
-       }
+  let newActivity = await Activities.create({          
+           name, 
+            season, 
+            duration,
+           difficult,   
+   })
+   let countries = await Countries.findAll({
+    where: { name : thecountries }
    })
 
-   let countries =  Countries.findAll({
-    where: { name : country }
-
+   countries.forEach(async e=> {
+       await newActivity.addCountries(e.id)
    })
-   newActivity.addCountries(countries)
-   console.log(newActivity)
-   res.send.json("Your activity was created correctly ")
+   //newActivity.addCountries(countries)
+   res.send(newActivity)
 })
 
 
