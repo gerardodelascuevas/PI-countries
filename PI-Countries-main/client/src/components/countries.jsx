@@ -16,13 +16,15 @@ export default function Countries (){
 
     //HACER LOGICA DE PAGINADO 
     const [pages, setPages] = useState(1)
-    const [countrypp] = useState(9)
+    const [countrypp] = useState(10)
+     
+    const countriesInPage = () => {
+            const firstCountry = pages === 1 ? 0 : pages * 10 - 10;
+            const lastCountry = pages === 1 ? 9 : firstCountry + 10;
+            return allCountries.slice(firstCountry, lastCountry);
+        }
+    let pagination = n=> setPages(n) 
 
-    let lastCountry = pages * countrypp
-    let firstCountry = lastCountry - countrypp
-    let currentCountry = allCountries.length > 1 ? allCountries.slice(firstCountry, lastCountry) : allCountries
-
-    let pagination = n=> setPages(n)
     //FIN DE LOGICA DE PAGINADO     
 
     //INICIO DE LOGICA DE BUSQUEDA POR NOMBRE
@@ -40,7 +42,7 @@ export default function Countries (){
     // }
 
     let myId = allCountries.find(x=> {
-        if(x.name.toLowerCase() == name.toLowerCase())
+        if(x.name.toLowerCase() == name.toLowerCase().trim())
         return x.id
     })
     const funcionParaBuscarElPais = ()=> {
@@ -110,7 +112,7 @@ export default function Countries (){
    }
     //FIN DE LOGICA DE ORDENAMIENTO POR ACTIVIDAD
     
-//    console.log(currentCountry)
+   
     return (
         <div> 
             <section className='section-1'>             
@@ -123,6 +125,9 @@ export default function Countries (){
             </section>
 
             <section className='busquedas'>
+                <Link to='../'>
+                    <button> Back to Landing </button>
+                </Link>
                 <select onChange={e=> orderthename(e.target.value)} className='abc'>
                     <option> Order by ABC</option>
                     <option value="a-z"> A-Z </option>
@@ -130,10 +135,10 @@ export default function Countries (){
                 </select>   
 
                 <select onChange={e=> orderbycontinentname(e.target.value)} className='continent'>
-                    <option > Order by Continent </option>    
+                    <option value='primero'> Order by Continent </option>    
                     <option value='Africa'> Africa </option>
                     <option value="Americas">America</option>
-                    {/* <option value="Antarctica">Antartida</option> */}
+                    <option value="Antarctic">Antartida</option>
                     <option value="Asia"> Asia </option>
                     <option value="Europe">Europe</option>                    
                     <option value="Oceania">Oceania</option>               
@@ -163,10 +168,12 @@ export default function Countries (){
             </section> 
 
             <input placeholder='Type for search your Country! 'onChange={e=> buscando(e.target.value)} />
-            <button onClick={e=> funcionParaBuscarElPais(e)}> Go to search! </button>
+            <button type='submit'
+             onClick={e=> funcionParaBuscarElPais(e)}
+             > Go to search! </button>
         <div className='main-container'>
             
-            {currentCountry.map(x=> {
+            {countriesInPage().map(x=> {
                 return <Card key={x.id} flag= {x.flag} name= {x.name} continent= {x.continent} id={x.id}/>
             })}
         </div>

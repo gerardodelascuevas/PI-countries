@@ -1,15 +1,16 @@
 const initialState = {
     countries: [],
     myCountry:[],
-    myActivity: [],
+    allCountries: [],
 }
 
 export default function rootReducer(state=initialState, action){
     switch(action.type){
         case "GET_COUNTRIES":
-            return {
+            return {                
                 ...state.countries,
-                countries: action.payload,
+                 allCountries: action.payload,
+                countries: action.payload,               
             }
 
         case "GET_DETAILS":
@@ -46,10 +47,22 @@ export default function rootReducer(state=initialState, action){
             }
 
         case "ORDER_BY_CONTINENT":
-             return {
-                ...state.myCountry,
-                countries: action.payload,
+            //  return {
+            //     ...state.countries,
+            //     countries: action.payload,
+            // }      
+            let allCountries = state.allCountries
+            let myContinent = action.payload
+            let myCountriesInContinent = allCountries.filter(x=> {
+                if(myContinent === 'primero') return allCountries
+                else return  x.continent === myContinent
+            })
+            console.log(allCountries)
+            return {
+                ...state,
+                countries: myCountriesInContinent
             }
+
 
         case "ORDER_BY_POPULATION":
             let sortPopulation = action.payload === "asc" ? 
@@ -98,7 +111,7 @@ export default function rootReducer(state=initialState, action){
                 return mispaises
             })
             return {
-                ...state,
+                ...state.countries,
                 countries: elpaisquebusco
             }
 

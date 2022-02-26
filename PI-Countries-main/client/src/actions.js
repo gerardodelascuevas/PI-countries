@@ -46,15 +46,22 @@ export const orderByName = (payload)=> {
   }
 }
 
-export const orderByContinent = (continent)=> {
-    return async dispatch => {
-        let json = await axios.get(`http://localhost:3001/countries?continent=${continent}`)
-        return dispatch ({
-            type: "ORDER_BY_CONTINENT",
-            payload: json.data
-        })
+// export const orderByContinent = (continent)=> {
+//     return async dispatch => {
+//         let json = await axios.get(`http://localhost:3001/countries?continent=${continent}`)
+//         return dispatch ({
+//             type: "ORDER_BY_CONTINENT",
+//             payload: json.data
+//         })
+//     }
+// }
+
+export const orderByContinent = (payload)=> {
+    return {
+        type: "ORDER_BY_CONTINENT",
+        payload,
     }
-}
+ }
 
 export const orderBySuperficie = (payload)=> {
     return {
@@ -84,7 +91,7 @@ export const getMyName = (payload)=> {
     }
 }
 
-export const filterByActivity = (payload)=> { //comer arepa 
+export const filterByActivity = (payload)=> { 
     return {
         type: "FILTER_ACTIVITIES",
         payload

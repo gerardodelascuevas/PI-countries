@@ -26,7 +26,7 @@ export default function Detail(){
         <div className="card-detail">
             <img className='flag-detail' src={theCountry.flag} alt={theCountry.name} />
             <h3> {theCountry.name} </h3>
-            <h4> {theCountry.id} </h4>
+            <h4> {theCountry.id.length > 3 ? theCountry.id.slice(0, 3).toUpperCase() : theCountry.id} </h4>
             <h4>Capital: {theCountry.capital}</h4>
             <h5>Subregion: {theCountry.subregion}</h5>
             <h5>Superficie: {theCountry.superficie} km2 </h5>
@@ -34,16 +34,16 @@ export default function Detail(){
             {/* <h5> Activities: {theCountry.activities.length ? theCountry.activities.map(x=> x.name) : "We don't have activities yet"}</h5>            */}
             <div>
                 <h5> Activities: {theCountry.activities.length ? theCountry.activities.map(x=> {
-                    return <span>{x.name}</span> 
+                    return <span>{x.name + " "}</span> 
                 }) : "We don't have activities yet"}</h5>
                  <h5> Activities duration: {theCountry.activities.length ? theCountry.activities.map(x=> {
                     return <span>{x.duration}</span> 
                 }) : ""}</h5>
                  <h5> Activities season: {theCountry.activities.length ? theCountry.activities.map(x=> {
-                    return <span>{x.season}</span> 
+                    return <span>{x.season + " "}</span> 
                 }) : ""}</h5>
                  <h5> Activities difficult: {theCountry.activities.length ? theCountry.activities.map(x=> {
-                    return <span>{x.difficult}</span> 
+                    return <span>{x.difficult + " "}</span> 
                 }) : ""}</h5>
             </div>
             <Link to='../countries'>

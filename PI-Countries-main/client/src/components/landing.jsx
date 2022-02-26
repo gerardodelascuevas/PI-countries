@@ -8,7 +8,7 @@ export default function Landing(){
         <div className='landing'>
             <h1 className='h1-mundo'>Hello world  </h1>
            <Link to ='./countries' >
-           <button > Come in to the world  </button>
+           <button className='button-landing'> Come in to the countries of this world  </button>
            </Link>
         </div>
     )

@@ -66,27 +66,30 @@ export default function ActivityCreate(){
                 return <option value={x.name}> { x.name } </option>  
             }) } 
                 
-            </select>
-            <span className="span-country"> Your contries for this activity: { country } </span>
+            </select> {country.length < 1 ? 'Please select at least one country' : null}
+            <span className="span-country"> Your contries for this activity: { country + " "}  </span>
             
             <h6> Activity Name: <input type='text' name="name" onChange={handlechange}/> </h6>
+            {myActivity.name.length < 3 ? 'Please select a name with more than 3 characters' : null}
+
             <h6> Season: 
                 <select name="season" onChange={e=> handlechange(e)}>
+                   
                     <option> Select the season </option>
                     <option value="summer">Summer </option>
                     <option value="fall"> Fall </option>
                     <option value="winter"> Winter </option>
                     <option value="sping"> Sping </option>    
-                                
-                </select>
+                             
+                </select> {!myActivity.season ? 'Please select a season' : null}
               
             </h6>
             <h6> Duration: 
             <form oninput = "result.value = parseInt(range.value)">
-                <input name="duration" id= 'range' type="range" min='1' max='300' onChange={handlechange}/> 
-                <output name='result' for="range" > 5 </output>
+                <input name="duration" id= 'range' type="range" min='1' max='24' onChange={handlechange}/> {myActivity.duration}  Hours
+
             </form> 
-             Hours </h6>
+             Hours </h6> {!myActivity.duration ? 'Please select a duration' : null}
             <h6> Difficult: 
                 <select name = 'difficult' onChange={handlechange}>
                     <option> Select the difficult </option>
@@ -95,8 +98,13 @@ export default function ActivityCreate(){
                     <option value="hard"> Hard </option>
                     <option value="extreme"> Extreme </option>
                 </select>
-            </h6>
-            <button onClick={handleCreateActivity}> Click here to create the activity!  </button>
+            </h6>{!myActivity.difficult ? 'Please select a difficult' : null} <br/>
+            <button 
+            onClick={handleCreateActivity}
+            disabled={
+                country.length < 1 || myActivity.name.length < 3 || !myActivity.season || !myActivity.duration || !myActivity.difficult
+            }
+            > Click here to create the activity!  </button>
         </div>
     )
 }

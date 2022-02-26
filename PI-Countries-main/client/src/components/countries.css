@@ -1,10 +1,12 @@
 .main-container{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    background-color: rgb(247, 235, 235);
 }
 
 .section-1{
     display: flex;
+    background-color: rgb(167, 167, 148);
     
 }
 .section-1 span{
