@@ -97,3 +97,10 @@ export const filterByActivity = (payload)=> {
         payload
     }
 }
+
+export const filtermycountry = (payload)=> {
+    return {
+        type: "FILTER_MY_COUNTRY",
+        payload
+    }
+}

@@ -19,10 +19,11 @@ module.exports = (sequelize) => {
     },
     duration: {
       type: DataTypes.FLOAT,
-
+      
     },
     difficult: {
       type: DataTypes.STRING,
-    },
+    }
   });
+  
 };

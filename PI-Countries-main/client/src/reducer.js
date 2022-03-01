@@ -2,12 +2,13 @@ const initialState = {
     countries: [],
     myCountry:[],
     allCountries: [],
+
 }
 
 export default function rootReducer(state=initialState, action){
     switch(action.type){
         case "GET_COUNTRIES":
-            return {                
+            return {
                 ...state.countries,
                  allCountries: action.payload,
                 countries: action.payload,               
@@ -53,11 +54,14 @@ export default function rootReducer(state=initialState, action){
             // }      
             let allCountries = state.allCountries
             let myContinent = action.payload
-            let myCountriesInContinent = allCountries.filter(x=> {
-                if(myContinent === 'primero') return allCountries
+            let myCountriesInContinent = allCountries!==undefined && allCountries.filter(x=> {
+                if(myContinent === 'primero') return allCountries //esta condicion no rompe 
                 else return  x.continent === myContinent
+      
+
             })
-            console.log(allCountries)
+            console.log(state.allCountries)
+            console.log(state.countries)
             return {
                 ...state,
                 countries: myCountriesInContinent
@@ -102,18 +106,35 @@ export default function rootReducer(state=initialState, action){
             }
 
         case "FILTER_ACTIVITIES":
-            let activity = action.payload
-            let filtrados = state.countries.filter(x=> {
+            console.log(state.allCountries)
+            let myactivity = action.payload
+            let elpaisquebusco
+             if(myactivity === "activities") {
+                 elpaisquebusco = state.allCountries
+                }            
+             else{
+                 let filtrados = state.allCountries && state.allCountries.filter(x=> {
                 return x.activities.length ? x : null
             }) //paises con actividades creadas 
-            let elpaisquebusco = filtrados.filter(x=> {
-                let mispaises = x.activities.find(x=> x.name == activity)
-                return mispaises
+             elpaisquebusco = filtrados.filter(x=> {                
+                  let mispaises = x.activities.find(x=> x.name === myactivity)
+                  return mispaises                
             })
+             }
+              
             return {
                 ...state.countries,
                 countries: elpaisquebusco
             }
+            case "FILTER_MY_COUNTRY":
+                let mycountry = action.payload
+                console.log(mycountry)
+                let filtrado = state.allCountries.filter(x=> {
+                   return x.name.toLowerCase().includes(mycountry.toLowerCase())                   
+                })
+                return {
+                    ...state,
+                    countries: filtrado}
 
 
             default: return state

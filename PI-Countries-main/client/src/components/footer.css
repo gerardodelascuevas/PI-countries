@@ -1,0 +1,11 @@
+
+.footer{
+    background: rgb(2,0,36);
+background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(191,191,191,1) 35%, rgba(0,212,255,1) 100%);
+}
+.img-footer{
+    width: 2.5rem;
+    height: 1.5rem;
+    padding: 0.5rem;
+    
+}

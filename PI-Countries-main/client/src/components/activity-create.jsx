@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 import { postMyActivity } from "../actions"
+import Footer from './footer'
 import './activity-create.css'
 
 
@@ -51,23 +52,40 @@ export default function ActivityCreate(){
         })
 
         navigate('/countries')
+}
 
-    }
+
+const [inputname, setInputname] = useState('')
+
+const handlesearchcountryininput = (e)=> {
+    setInputname(e)        
+}
+console.log(inputname)
+
+const handlesearchcountryininputbutton = ()=>{
+    let paisencontrado = allCountries.find(x=> x.name.toLowerCase() === inputname.toLowerCase())
+    if(paisencontrado) return setCountry([...country, paisencontrado.name])
+    else return alert("Sorry, country not found")
+}    
     return (
+        <div>
+              <Link to='../countries'> 
+                <button className="button-primary"> Back to home </button>
+            </Link>
         <div className="activity-creates">
 
-            <Link to='../countries'> 
-                <button> Back to home </button>
-            </Link>
-            
+          
+            <input type='search' placeholder='Type your country' onChange={e=> handlesearchcountryininput(e.target.value)}/> 
+            <button onClick={handlesearchcountryininputbutton}> Search country</button> <br/>
             <select name="country" onChange={e=> handleSelectCountry(e)}> 
               
             { allCountries.map(x=> {
                 return <option value={x.name}> { x.name } </option>  
-            }) } 
+            }) }  
                 
-            </select> {country.length < 1 ? 'Please select at least one country' : null}
-            <span className="span-country"> Your contries for this activity: { country + " "}  </span>
+            </select> <br/>{country.length < 1 ? 'Please select at least one country' : null} <br/>
+            <span className="span-country"> <b>Your contries for this activity:</b> { country + " "}  </span> <br/>    
+            <button onClick={e=> setCountry([])}> Clear your countries </button>
             
             <h6> Activity Name: <input type='text' name="name" onChange={handlechange}/> </h6>
             {myActivity.name.length < 3 ? 'Please select a name with more than 3 characters' : null}
@@ -99,12 +117,14 @@ export default function ActivityCreate(){
                     <option value="extreme"> Extreme </option>
                 </select>
             </h6>{!myActivity.difficult ? 'Please select a difficult' : null} <br/>
-            <button 
+            <button className="creationbutton"
             onClick={handleCreateActivity}
             disabled={
                 country.length < 1 || myActivity.name.length < 3 || !myActivity.season || !myActivity.duration || !myActivity.difficult
             }
             > Click here to create the activity!  </button>
+        </div>
+            <Footer />
         </div>
     )
 }

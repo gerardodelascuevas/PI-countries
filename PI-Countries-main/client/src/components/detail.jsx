@@ -36,15 +36,16 @@ export default function Detail(){
                 <h5> Activities: {theCountry.activities.length ? theCountry.activities.map(x=> {
                     return <span>{x.name + " "}</span> 
                 }) : "We don't have activities yet"}</h5>
+                 {theCountry.activities !== null  ? //QUITAR ESTO 
                  <h5> Activities duration: {theCountry.activities.length ? theCountry.activities.map(x=> {
-                    return <span>{x.duration}</span> 
-                }) : ""}</h5>
+                    return <span>{x.duration + ' '}</span> 
+                }) : ""}</h5> : null } 
                  <h5> Activities season: {theCountry.activities.length ? theCountry.activities.map(x=> {
                     return <span>{x.season + " "}</span> 
                 }) : ""}</h5>
                  <h5> Activities difficult: {theCountry.activities.length ? theCountry.activities.map(x=> {
                     return <span>{x.difficult + " "}</span> 
-                }) : ""}</h5>
+                }) : ""}</h5> 
             </div>
             <Link to='../countries'>
                 <button> Back to home! </button>

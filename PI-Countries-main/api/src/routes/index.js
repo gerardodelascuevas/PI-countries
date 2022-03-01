@@ -13,13 +13,12 @@ const router = Router();
 
 const allCountries = async ()=> {
  let countryData = await axios.get(`https://restcountries.com/v3/all`)
+ //console.log(countryData[1])
  //country data es objeto 
  countryData = Object.values(countryData).splice(5)[0]
  //AHORA COUNTRY DATA ES ARRAY
  //console.log(countryData)
     let result = countryData.map(x=> {
-        let nombre = x.name.common.slice(0, 3)
-        //console.log(nombre)
       return {
          // id: x.fifa ? x.fifa : x.name.common.slice(0, 3), //x.name.common,//String(Math.random()),
           id: x.fifa ? x.fifa : x.name.common, //String(Math.random()),
@@ -71,8 +70,6 @@ router.get('/country', async (req, res)=> {
     const {name} = req.query
     const infodb =  await allCountries()
   const dbinfo = await getAllInfo()
-
-    //console.log(dbinfo)
     dbinfo.map(x=> {
                 try { Countries.findOrCreate({
                         where: {
@@ -166,11 +163,13 @@ router.post('/activity', async (req, res)=> {
    // console.log(req.body)
    const { thecountries, name, season, duration, difficult } = req.body   
 
-  let newActivity = await Activities.create({          
-           name, 
+  let newActivity = await Activities.create({  
+    //   where: {
+             name, 
             season, 
             duration,
-           difficult,   
+           difficult,  
+    //   }                      
    })
    let countries = await Countries.findAll({
     where: { name : thecountries }
