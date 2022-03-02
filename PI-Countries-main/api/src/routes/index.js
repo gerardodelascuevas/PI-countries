@@ -5,7 +5,6 @@ const { Countries, Activities } = require('../db')
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
-
 const router = Router();
 
 // Configurar los routers
@@ -25,8 +24,6 @@ const allCountries = async ()=> {
           name: x.name.common,
           capital: x.capital ? x.capital[0] : "We don't have a capital",
           continent: x.region,
-         // x.languages: { ber: 'Berber', mey: 'Hassaniya', spa: 'Spanish' },
-          //languages: typeof x.languages == 'object' ? Object.values(x.languages) : x.languages,
           superficie: x.area,
           flag: x.flags[0],
          population: x.population,
@@ -34,42 +31,39 @@ const allCountries = async ()=> {
       }
     })
     result = Object.values(result)
-    
-        return result
-     
-        } 
+    return result
+     } 
 
 const getDbInfo = async ()=> {
     return await Countries.findAll({
         include: [{
             model: Activities,
             attributes: ["name", "season", "duration", "difficult"],
-            through: {
-                attributes: []
-            }
+            // through: {
+            //     attributes: []
+            // }
         }]
     })
 }
 
-const getAllInfo = async ()=> {
-    const apiInfo = await allCountries()
-    const databaseinfo = await getDbInfo()
-   // console.log(databaseinfo)
-    let allinfo = apiInfo.concat(databaseinfo)    
-    return allinfo
-}
+// const getAllInfo = async ()=> {
+//     const apiInfo = await allCountries()
+//     const databaseinfo = await getDbInfo()
+//    // console.log(databaseinfo)
+//     let allinfo = apiInfo.concat(databaseinfo)    
+//     return allinfo
+// }
 
-router.get('/prueba', async (req, res)=> {
-    try {
-        const information = await getAllInfo()
-        res.send(information)
-    } catch(e) {console.log(e)}
-})
+// router.get('/prueba', async (req, res)=> {
+//     try {
+//         const information = await getAllInfo()
+//         res.send(information)
+//     } catch(e) {console.log(e)}
+// })
 
 router.get('/country', async (req, res)=> {
     const {name} = req.query
-    const infodb =  await allCountries()
-  const dbinfo = await getAllInfo()
+  const dbinfo = await allCountries()
     dbinfo.map(x=> {
                 try { Countries.findOrCreate({
                         where: {
@@ -77,19 +71,15 @@ router.get('/country', async (req, res)=> {
                             name: x.name,
                             capital: x.capital ? x.capital : "We don't have a capital",
                             continent: x.continent,
-                        //   languages: typeof x.languages == 'object' ? Object.values(x.languages) : x.languages,
                             superficie: x.superficie,
                             flag: x.flag,
                             population: x.population,
                             subregion: x.subregion ? x.subregion : "Sorry we don't have data",                             
-                            // Activities: x.activities ? x.activities : "Sorry we don't have activities yet"
                         }     
                 })                   
                 } catch(e) {console.log(e)}
               })
-             // console.log(await getDbInfo())
              const infodedatabase = await getDbInfo()
-            // console.log(infodedatabase)
     if(name){
         let myCountry = await axios.get(`https://restcountries.com/v3/name/${name}`)
         myCountry = myCountry.data[0]
@@ -108,7 +98,6 @@ router.get('/country', async (req, res)=> {
         res.send(myData)
     }     
     
-   
      else res.send(infodedatabase)    
 })
 
@@ -133,21 +122,6 @@ router.get('/countries', async(req, res)=> {
     const { continent } = req.query
 
     const theInfo = await allCountries()
-    theInfo.map(x=> {
-        try { Countries.findOrCreate({
-                where: {
-                    id: typeof x.id == 'string' ? x.id : x.name.slice(0, 3).toUpperCase(),
-                    name: x.name,
-                    capital: x.capital ? x.capital : "We don't have a capital",
-                    continent: x.continent,
-                    superficie: x.superficie,
-                    flag: x.flag,
-                    population: x.population,
-                    subregion: x.subregion ? x.subregion : "Sorry we don't have data", 
-                }     
-        })                   
-        } catch(e) {console.log(e)}
-      })
     const allData = await Countries.findAll()
     
     const myContinentCountries = allData.filter(x=> {
@@ -164,12 +138,10 @@ router.post('/activity', async (req, res)=> {
    const { thecountries, name, season, duration, difficult } = req.body   
 
   let newActivity = await Activities.create({  
-    //   where: {
              name, 
             season, 
             duration,
-           difficult,  
-    //   }                      
+           difficult,                     
    })
    let countries = await Countries.findAll({
     where: { name : thecountries }
@@ -178,7 +150,6 @@ router.post('/activity', async (req, res)=> {
    countries.forEach(async e=> {
        await newActivity.addCountries(e.id)
    })
-   //newActivity.addCountries(countries)
    res.send(newActivity)
 })
 

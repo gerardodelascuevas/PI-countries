@@ -5,7 +5,6 @@ import { filtermycountry, filterByActivity, getCountries, orderByContinent, orde
 import Card from './card'
 import './countries.css'
 import Pagination from './pagination'
-import Search from './search'
 import { myCountryByName } from "../actions"
 import { Link, useNavigate } from 'react-router-dom'
 import Footer from './footer'
@@ -93,7 +92,7 @@ export default function Countries (){
         return a
        }, [])
 
-       console.log(continenteslistosparamostrar)
+      // console.log(continenteslistosparamostrar)
     //FIN DE LOGICA DE ORDENAMIENTO POR CONTINENTE
 
     //INICIO DE LOGICA DE ORDENAMIENTO POR POBLACION 
@@ -143,7 +142,8 @@ export default function Countries (){
             <section className='section-1'>   
             <Link to='../'>
                     <button className='primary-button'> Back to Landing </button>
-             </Link>        
+             </Link> 
+                    <button className='primary-button refresh-button' onClick={e=> window.location.reload(e)} >Refresh All</button>     
             <Pagination           
             allCountries = { allCountries }
             countrypp = { countrypp }

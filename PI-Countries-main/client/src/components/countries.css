@@ -94,7 +94,9 @@ form span {
         
     
 }
-
+.refresh-button{
+    height: 23px;
+}
 .filtercountry{    
     margin-left: 30rem;
 }
@@ -170,10 +172,30 @@ form span {
     .main-container{
         display: grid;
         grid-template-columns: repeat(1, 1fr);
+        padding-left: 2rem;
     }
 
     .section-1{
        max-width: 100%;
+    }
+
+    .main-span{
+                
+            font-size: 12px;
+    }
+
+    .busquedas{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .filtercountry{
+        margin-left: -7rem;
+        position: absolute;
+        margin-top: -6rem;
+    
+    }
+    .refresh-button{
+        height: 2.4rem;
     }
        
   }
@@ -183,6 +205,7 @@ form span {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
     }
+
   }
   /** dispositivos medianos (tablets) */
   @media (min-width: 768px) and (max-width: 991px) {

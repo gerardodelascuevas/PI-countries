@@ -2,6 +2,7 @@ const initialState = {
     countries: [],
     myCountry:[],
     allCountries: [],
+    totalCountries: [],
 
 }
 
@@ -11,7 +12,8 @@ export default function rootReducer(state=initialState, action){
             return {
                 ...state.countries,
                  allCountries: action.payload,
-                countries: action.payload,               
+                countries: action.payload,   
+                totalCountries: action.payload,            
             }
 
         case "GET_DETAILS":
@@ -52,16 +54,14 @@ export default function rootReducer(state=initialState, action){
             //     ...state.countries,
             //     countries: action.payload,
             // }      
-            let allCountries = state.allCountries
+            let allCountries = state.totalCountries
             let myContinent = action.payload
-            let myCountriesInContinent = allCountries!==undefined && allCountries.filter(x=> {
-                if(myContinent === 'primero') return allCountries //esta condicion no rompe 
-                else return  x.continent === myContinent
-      
-
+            // if(myContinent === 'primero') return allCountries
+            let myCountriesInContinent = myContinent === "primero" ? allCountries : allCountries.filter(x=> { 
+               return  x.continent.includes(myContinent) 
             })
             console.log(state.allCountries)
-            console.log(state.countries)
+            //console.log(state.countries)
             return {
                 ...state,
                 countries: myCountriesInContinent
@@ -106,7 +106,7 @@ export default function rootReducer(state=initialState, action){
             }
 
         case "FILTER_ACTIVITIES":
-            console.log(state.allCountries)
+           // console.log(state.allCountries)
             let myactivity = action.payload
             let elpaisquebusco
              if(myactivity === "activities") {
