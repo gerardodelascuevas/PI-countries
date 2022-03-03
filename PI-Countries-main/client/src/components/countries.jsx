@@ -108,7 +108,7 @@ export default function Countries (){
     const ordthesup = (e)=> {
         dispatch(orderBySuperficie(e))
        setPages(1)
-       setOrdsup(`order ${e}`)    //--> sin esto rompe 
+       setOrdsup(` ${e}`)    //--> sin esto rompe 
     }
     //FIN DE LOGICA DE ORDENAMIENTO POR TERRITORIO 
 
@@ -134,6 +134,27 @@ export default function Countries (){
        setOrdbyact(`order ${e}`)}
    }
     //FIN DE LOGICA DE ORDENAMIENTO POR ACTIVIDAD
+
+    //mandar arriba el scroll
+    const subirPrev = ()=> {
+        if(pages !==1){
+            setPages(pages-1)
+        }       
+        window.scrollTo({
+            top: "0px", 
+            behavior:"smooth",
+        })
+    }
+
+    const subirNext = ()=> {
+        if(pages <25){
+            setPages(pages+1)
+        }       
+        window.scrollTo({
+            top: "0px", 
+            behavior:"smooth",
+        })
+    }
 
     return (
         <div> 
@@ -238,8 +259,10 @@ export default function Countries (){
             
         </div>
         <div className='button-container'> 
-                <button className='primary-button prevnext prev' onClick={()=> pages!==1 ?  setPages(pages-1) : null}> Prev </button>
-                <button className='primary-button prevnext next'onClick={()=> pages < 25 ? setPages(pages +1) : null}> Next </button>
+                <button className='primary-button prevnext prev' onClick={e=> subirPrev(e)} 
+               
+                > Prev </button>
+                <button className='primary-button prevnext next'onClick={e=> subirNext(e)}> Next </button>
         </div>
         <Footer />
         </div>

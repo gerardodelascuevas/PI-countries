@@ -10,84 +10,39 @@ const router = Router();
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 
-// const allCountries = async ()=> {
-//  let countryData = await axios.get(`https://restcountries.com/v3/all`)
-//  //console.log(countryData[1])
-//  //country data es objeto 
-//  countryData = Object.values(countryData).splice(5)[0]
-//  //AHORA COUNTRY DATA ES ARRAY
-//  //console.log(countryData)
-//     let result = countryData.map(x=> {
-//       return {
-//          // id: x.fifa ? x.fifa : x.name.common.slice(0, 3), //x.name.common,//String(Math.random()),
-//           id: x.fifa ? x.fifa : x.name.common, //String(Math.random()),
-//           name: x.name.common,
-//           capital: x.capital ? x.capital[0] : "We don't have a capital",
-//           continent: x.region,
-//           superficie: x.area,
-//           flag: x.flags[0],
-//          population: x.population,
-//          subregion: x.subregion,          
-//       }
-//     })
-//     return result
-//      }
-const allCountries =  ()=> {
-    return new Promise((res, rej)=> {
-        res(axios.get(`https://restcountries.com/v3/all`)
-    //console.log(countryData[1])
-    //country data es objeto 
-    .then(x=> Object.values(x).splice(5)[0])
-   // countryData = Object.values(countryData).splice(5)[0]
-    //AHORA COUNTRY DATA ES ARRAY
-    //console.log(countryData)
-    .then(x=> x.map(x=> {
-        return {
-            // id: x.fifa ? x.fifa : x.name.common.slice(0, 3), //x.name.common,//String(Math.random()),
-             id: x.fifa ? x.fifa : x.name.common, //String(Math.random()),
-             name: x.name.common,
-             capital: x.capital ? x.capital[0] : "We don't have a capital",
-             continent: x.region,
-             superficie: x.area,
-             flag: x.flags[0],
-            population: x.population,
-            subregion: x.subregion,          
-         }
-    })))
-    })     
-        } 
-        console.log(allCountries())
+const allCountries = async ()=> {
+ let countryData = await axios.get(`https://restcountries.com/v3/all`)
+ //console.log(countryData[1])
+ //country data es objeto 
+ countryData = Object.values(countryData).splice(5)[0]
+ //AHORA COUNTRY DATA ES ARRAY
+ //console.log(countryData)
+    let result = countryData.map(x=> {
+      return {
+         // id: x.fifa ? x.fifa : x.name.common.slice(0, 3), //x.name.common,//String(Math.random()),
+          id: x.fifa ? x.fifa : x.name.common, //String(Math.random()),
+          name: x.name.common,
+          capital: x.capital ? x.capital[0] : "We don't have a capital",
+          continent: x.region,
+          superficie: x.area,
+          flag: x.flags[0],
+         population: x.population,
+         subregion: x.subregion,          
+      }
+    })
+    return result
+     }
 
-// const getDbInfo = async ()=> {
-//     return await Countries.findAll({
-//         include: [{
-//             model: Activities,
-//             attributes: ["name", "season", "duration", "difficult"],
+const getDbInfo = async ()=> {
+    return await Countries.findAll({
+        include: [{
+            model: Activities,
+            attributes: ["name", "season", "duration", "difficult"],
 
-//         }]
-//     })
-// }
-
-function getDbInfo(){
-   return new Promise ((res, rej)=> {
-       res(Countries.findAll({
-                include: [{
-                    model: Activities,
-                    attributes: ["name", "season", "duration", "difficult"],
-        
-                }]
-            })) 
-            rej(e=> console.log(e))
-   })
+        }]
+    })
 }
 
-
-// const getAllInfo = async ()=> {
-//     const apiInfo = await allCountries()
-//     const databaseinfo = await getDbInfo()
-//    // console.log(databaseinfo)
-//     let allinfo = apiInfo.concat(databaseinfo)    
-//     return allinfo
 // }
 
 // router.get('/prueba', async (req, res)=> {

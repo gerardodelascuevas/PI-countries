@@ -78,7 +78,7 @@ export const orderByPopulation = (payload)=> {
 }
 
 export const postMyActivity = (payload)=> {
-    return async(dispatch)=> {
+    return async()=> {
         const response = await axios.post(`http://localhost:3001/activity`, payload)
         return response
     }
