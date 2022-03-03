@@ -11,10 +11,11 @@ import Footer from './footer'
 
 export default function Countries (){  
     const dispatch = useDispatch()
+    let countriestotal = useSelector(state=> state.allCountries)
     let allCountries = useSelector(state=> state.countries)
     useEffect(()=> dispatch(getCountries()), [dispatch])
 
-    //console.log(allCountries)    
+    console.log(countriestotal)    
 
     //HACER LOGICA DE PAGINADO 
     const [pages, setPages] = useState(1)
@@ -36,13 +37,6 @@ export default function Countries (){
     const buscando= (e)=> { //e es el valor del input
        setName(e)
     }
-    // const funcionParaBuscarElPais = (e)=> {
-    //     e.preventDefault()
-    //     dispatch(myCountryByName(name))
-    //     setPages(1)
-    //     setName('')
-    // }
-
 
     let myId = allCountries.find(x=> {
         if(x.name.toLowerCase() == name.toLowerCase().trim())
@@ -65,15 +59,20 @@ export default function Countries (){
     const [odrname, setOrdname] = useState ('') // --> sin esto se rompe 
     const orderthename = (e)=> {
         dispatch(orderByName(e))
-        setPages(1)
       setOrdname(`order ${e}`)    //--> sin esto rompe 
     }
 
     //FIN DE LA LOGICA DE ORDENAMIENTO POR ORDEN ALFABETICO
     
     //INICIO DE LOGICA DE ORDENAMIENTO POR CONTINENTE 
+    let miactividadactiva = document.querySelector('.activities')
+    //console.log(miactividadactiva.value)
+
    const [continent, setContinent] = useState('')
-    const orderbycontinentname = (e)=> {
+    const orderbycontinentname =  (e)=> { 
+        if(miactividadactiva && miactividadactiva.value !== 'activities'){       
+           window.location.reload()
+        }          
         if(e=== 'primero') dispatch(getCountries())
        else {dispatch(orderByContinent(e))
         setPages(1)
@@ -86,13 +85,12 @@ export default function Countries (){
       continentes.push(continente)
     })
 
-
     let continenteslistosparamostrar = continentes.reduce((a, e) =>{ //ELIMINAR DUPLICADOS
         if(!a.find(d=> d===e)) a.push(e)
         return a
        }, [])
 
-      // console.log(continenteslistosparamostrar)
+      console.log(continenteslistosparamostrar)
     //FIN DE LOGICA DE ORDENAMIENTO POR CONTINENTE
 
     //INICIO DE LOGICA DE ORDENAMIENTO POR POBLACION 
@@ -130,13 +128,13 @@ export default function Countries (){
    const [ordbyact, setOrdbyact] = useState('')
    const filtrarporactividad = (e)=> {
        if(e === "activities") dispatch(getCountries())
-       else {dispatch(filterByActivity(e))
+       else {
+       dispatch(filterByActivity(e))
        setPages(1)
        setOrdbyact(`order ${e}`)}
    }
     //FIN DE LOGICA DE ORDENAMIENTO POR ACTIVIDAD
-    
-   
+
     return (
         <div> 
             <section className='section-1'>   
@@ -149,6 +147,7 @@ export default function Countries (){
             countrypp = { countrypp }
             pagina = { pagination }
             />
+
             <span className='main-span'> You are on page {pages}</span>
             </section>
            
@@ -192,15 +191,16 @@ export default function Countries (){
                 </form>
                 </div>  
 
-                <select onChange={e=> orderbycontinentname(e.target.value)} className='continent'>
+                <select onChange={e=> orderbycontinentname(e.target.value)} className='continent' >
+                                   
                     <option value='primero'> Order by Continent </option>    
-                    <option value='Africa'> Africa </option>
+                     <option value='Africa'> Africa </option>
                     <option value="Americas">America</option>
                     <option value="Antarctic">Antartida</option>
                     <option value="Asia"> Asia </option>
                     <option value="Europe">Europe</option>                    
-                    <option value="Oceania">Oceania</option>               
-                    {/* {continenteslistosparamostrar.map(x=> <option value={x}> {x} </option>)} */}
+                    <option value="Oceania">Oceania</option>                
+                    {/* {continenteslistosparamostrar.map(x=> <option value={x}> {x} </option>) */}
 
                     
               </select>

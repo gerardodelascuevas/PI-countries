@@ -23,9 +23,6 @@ module.exports = (sequelize) => {
     capital: {
       type: DataTypes.STRING,
     },
-    // languages: {
-    //   type: DataTypes.STRING,
-    // },
     superficie: {
       type: DataTypes.FLOAT,
     },

@@ -1,8 +1,8 @@
 const initialState = {
     countries: [],
-    myCountry:[],
+    //myCountry:[],
     allCountries: [],
-    totalCountries: [],
+    //totalCountries: [],
 
 }
 
@@ -13,26 +13,15 @@ export default function rootReducer(state=initialState, action){
                 ...state.countries,
                  allCountries: action.payload,
                 countries: action.payload,   
-                totalCountries: action.payload,            
+                //totalCountries: action.payload,            
             }
 
-        case "GET_DETAILS":
-            return{
-                ...state.myCountry,
-                myCountry: action.payload,
-            }
+        // case "GET_DETAILS":
+        //     return{
+        //         ...state.myCountry,
+        //         myCountry: action.payload,
+        //     }
 
-        case "GET_BY_NAME":
-            // return {
-            //     ...state.countries,
-            //     countries: action.payload,
-            // }
-            let mipais = action.payload
-            let elpais = state.countries.find(x=> x.name== mipais)
-            return {
-                ...state.countries, 
-                countries: elpais
-            }
 
         case "ORDER_BY_NAME":
             let sortName = action.payload === "a-z" ? 
@@ -54,14 +43,12 @@ export default function rootReducer(state=initialState, action){
             //     ...state.countries,
             //     countries: action.payload,
             // }      
-            let allCountries = state.totalCountries
-            let myContinent = action.payload
-            // if(myContinent === 'primero') return allCountries
+            let allCountries = state.allCountries
+            let myContinent = action.payload           
             let myCountriesInContinent = myContinent === "primero" ? allCountries : allCountries.filter(x=> { 
                return  x.continent.includes(myContinent) 
             })
-            console.log(state.allCountries)
-            //console.log(state.countries)
+            console.log(state.allCountries)         
             return {
                 ...state,
                 countries: myCountriesInContinent
@@ -110,10 +97,10 @@ export default function rootReducer(state=initialState, action){
             let myactivity = action.payload
             let elpaisquebusco
              if(myactivity === "activities") {
-                 elpaisquebusco = state.allCountries
+                 elpaisquebusco = state.allCountries && state.allCountries
                 }            
              else{
-                 let filtrados = state.allCountries && state.allCountries.filter(x=> {
+                 let filtrados = state.allCountries.filter(x=> {
                 return x.activities.length ? x : null
             }) //paises con actividades creadas 
              elpaisquebusco = filtrados.filter(x=> {                

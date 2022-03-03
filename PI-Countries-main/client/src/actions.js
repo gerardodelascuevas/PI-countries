@@ -84,12 +84,6 @@ export const postMyActivity = (payload)=> {
     }
 }
 
-export const getMyName = (payload)=> {
-    return {
-        type: "GET_BY_NAME",
-        payload
-    }
-}
 
 export const filterByActivity = (payload)=> { 
     return {
