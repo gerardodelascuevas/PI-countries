@@ -1,6 +1,6 @@
 const initialState = {
     countries: [],
-    myCountry:[],
+    //myCountry:[],
     allCountries: [],
     //totalCountries: [],
 
@@ -16,13 +16,12 @@ export default function rootReducer(state=initialState, action){
                 //totalCountries: action.payload,            
             }
 
-        case "GET_DETAILS":
-            console.log(state.myCountry)
-            return{
-                ...state.myCountry,
-                myCountry: action.payload,                
-            }
-            
+        // case "GET_DETAILS":
+        //     return{
+        //         ...state.myCountry,
+        //         myCountry: action.payload,
+        //     }
+
 
         case "ORDER_BY_NAME":
             let sortName = action.payload === "a-z" ? 

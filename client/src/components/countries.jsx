@@ -11,8 +11,11 @@ import Footer from './footer'
 
 export default function Countries (){  
     const dispatch = useDispatch()
+    let countriestotal = useSelector(state=> state.allCountries)
     let allCountries = useSelector(state=> state.countries)
     useEffect(()=> dispatch(getCountries()), [dispatch])
+
+    console.log(countriestotal)    
 
     //HACER LOGICA DE PAGINADO 
     const [pages, setPages] = useState(1)

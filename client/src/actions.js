@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const getCountries = ()=> {
     return async dispatch=> {
-        let json = await axios.get('http://localhost:3001/country')
+        let json = await axios.get('/country')
         return dispatch({
             type: "GET_COUNTRIES",
             payload: json.data,
@@ -11,8 +11,9 @@ export const getCountries = ()=> {
 }
 
 export const myCountry = (id)=> {
+
     return async dispatch=> {
-        let json = await axios.get(`http://localhost:3001/country/${id}`)
+        let json = await axios.get(`/country/${id}`)
         return dispatch({
             type: "GET_DETAILS",
             payload: json.data, 
@@ -78,7 +79,7 @@ export const orderByPopulation = (payload)=> {
 
 export const postMyActivity = (payload)=> {
     return async()=> {
-        const response = await axios.post(`http://localhost:3001/activity`, payload)
+        const response = await axios.post(`/activity`, payload)
         return response
     }
 }
