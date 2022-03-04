@@ -1,0 +1,30 @@
+
+.landing{
+    background-image: url('./img/Planet-earth-surface-atmosphere_1920x1080.jpg');
+    width: 209vh;
+    height: 100vh;
+    position: absolute; 
+    overflow: hidden;
+   
+     background-repeat: no-repeat;
+  
+}
+
+.h1-mundo{
+    color: rgb(43, 202, 15)
+}
+
+.button-landing{
+    border-radius: 5px;
+    background-color: rgb(43, 202, 15);
+}
+
+.button-landing:hover{
+    cursor: pointer;
+    background-color: rgb(17, 17, 245);
+    -webkit-transform:scale(1.1);
+    -moz-transform:scale(1.1);
+    -ms-transform:scale(1.1);
+    -o-transform:scale(1.1);
+    transform:scale(1.1);
+}
